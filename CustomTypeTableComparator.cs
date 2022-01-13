@@ -35,7 +35,12 @@ public class CustomTypeTableComparator : MonoBehaviour
     public CategoryComparatorItem result = new CategoryComparatorItem();
 
     [Header("Json To Csv Property")]
-    public string jsonPath;
+    public string jsonPath1;
+    public string jsonPath2;
+    public string jsonPath3;
+    public string jsonPath4;
+
+
     public TargetType targetType;
     public enum TargetType
     {
@@ -190,147 +195,194 @@ public class CustomTypeTableComparator : MonoBehaviour
         Debug.Log(dstDir);
     }
 
+    //[ContextMenu("Json To CSV")]
+    //public void JsonToCsv()
+    //{
+    //    bool isNewItemList = targetType == TargetType.NEWITEMLIST;
+    //    string csvName = isNewItemList ? "_new.csv" : "_deleted.csv";
+    //    string csvPath = jsonPath.Replace(".json", csvName);
+    //    string[] header = { "아이템 타입", "아바타 아이템", "색상 명칭", "아이템 기본 색상" };
+    //    string strSeperator = ",";
+    //    List<string[]> lineList = new List<string[]>();
+    //    StringBuilder sb = new StringBuilder();
+    //    CategoryComparatorItem cci = new CategoryComparatorItem();
+
+    //    try
+    //    {
+    //        string text = File.ReadAllText(jsonPath);
+    //        cci = JsonUtility.FromJson<CategoryComparatorItem>(text);
+    //    }
+    //    catch
+    //    {
+    //        Debug.Log("File Read / Json Parsing Error. Please Check jsonPath");
+    //        return;
+    //    }
+
+    //    sb.AppendLine(string.Join(strSeperator, header));
+
+    //    List<CategoryItemList> itemList = isNewItemList ? cci.newItemList : cci.delItemList;
+    //    foreach (var item in itemList)
+    //    {
+    //        // TODO: 필요시 Color 에 대한 예외처리
+    //        foreach (var name in item.itemNameList)
+    //        {
+    //            string[] line = { item.categoryName, name, "", "" };
+    //            lineList.Add(line);
+    //        }
+    //    }
+
+    //    // TODO: 필요시 Color 에 대한 예외처리
+
+    //    foreach (var line in lineList)
+    //    {
+    //        sb.AppendLine(string.Join(strSeperator, line));
+    //    }
+
+    //    File.WriteAllText(csvPath, sb.ToString(), Encoding.UTF8);
+    //    // File.AppendAllText(csvPath, sb.ToString());
+
+    //    Debug.Log("Json to CSV Done: " + csvPath);
+    //}
+
     [ContextMenu("Json To CSV")]
     public void JsonToCsv()
     {
-        bool isNewItemList = targetType == TargetType.NEWITEMLIST;
-        string csvName = isNewItemList ? "_new.csv" : "_deleted.csv";
-        string csvPath = jsonPath.Replace(".json", csvName);
-        string[] header = { "아이템 타입", "아바타 아이템", "색상 명칭", "아이템 기본 색상" };
-        string strSeperator = ",";
-        List<string[]> lineList = new List<string[]>();
-        StringBuilder sb = new StringBuilder();
-        CategoryComparatorItem cci = new CategoryComparatorItem();
-
-        try
-        {
-            string text = File.ReadAllText(jsonPath);
-            cci = JsonUtility.FromJson<CategoryComparatorItem>(text);
-        }
-        catch
-        {
-            Debug.Log("File Read / Json Parsing Error. Please Check jsonPath");
-            return;
-        }
-
-        sb.AppendLine(string.Join(strSeperator, header));
-
-        List<CategoryItemList> itemList = isNewItemList ? cci.newItemList : cci.delItemList;
-        foreach (var item in itemList)
-        {
-            // TODO: 필요시 Color 에 대한 예외처리
-            foreach (var name in item.itemNameList)
-            {
-                string[] line = { item.categoryName, name, "", "" };
-                lineList.Add(line);
-            }
-        }
-
-        // TODO: 필요시 Color 에 대한 예외처리
-
-        foreach (var line in lineList)
-        {
-            sb.AppendLine(string.Join(strSeperator, line));
-        }
-
-        File.WriteAllText(csvPath, sb.ToString(), Encoding.UTF8);
-        // File.AppendAllText(csvPath, sb.ToString());
-
-        Debug.Log("Json to CSV Done: " + csvPath);
-    }
-
-    [ContextMenu("Json To CSV Test")]
-    public void JsonToCsv_Test()
-    {
-        bool isNewItemList = targetType == TargetType.NEWITEMLIST;
-        string csvName = isNewItemList ? "_new.csv" : "_deleted.csv";
-        string csvPath = jsonPath.Replace(".json", csvName);
+        string[] jsonPath = { jsonPath1, jsonPath2, jsonPath3, jsonPath4 };
         string[] header = { "아이템 타입", "아바타 아이템", "색상 명칭", "아이템 기본 색상", "Typename" };
         string strSeperator = ",";
-        List<string[]> lineList = new List<string[]>();
-        StringBuilder sb = new StringBuilder(); //https://hardlearner.tistory.com/288
 
-        if (jsonPath.ToLower().Contains("animation"))    //ToLower() -> 소문자 컨버트, Contains() -> 해당 문자열 포함 확인(T/F)
+
+        for (int j = 0; j < jsonPath.Length; j++)
         {
-            AvatarAnimationDescript des = new AvatarAnimationDescript();
-
-            try
+            if (jsonPath[j].ToLower().Contains("animations"))    //ToLower() -> 소문자 컨버트, Contains() -> 해당 문자열 포함 확인(T/F)
             {
-                string text = File.ReadAllText(jsonPath);
-                des = JsonUtility.FromJson<AvatarAnimationDescript>(text);   //https://m.blog.naver.com/wolat/220865546178
-            }
-            catch
-            {
-                Debug.Log("File Read / Json Parsing Error. Please Check jsonPath");
-                return;
-            }
+                List<string[]> AlineList = new List<string[]>();
+                StringBuilder Asb = new StringBuilder();
+                AvatarAnimationDescript Ades = new AvatarAnimationDescript();
+                string AFileposi;
 
-            sb.AppendLine(string.Join(strSeperator, header));
+                try
+                {
+                    string text = File.ReadAllText(jsonPath[j]);
+                    Ades = JsonUtility.FromJson<AvatarAnimationDescript>(text);   //https://m.blog.naver.com/wolat/220865546178
+                }
+                catch
+                {
+                    Debug.Log("File Read / Json Parsing Error. Please Check jsonPath");
+                    return;
+                }
+
+                Asb.AppendLine(string.Join(strSeperator, header));
 
 
-            // TODO: 필요시 Color 에 대한 예외처리
-            
-                foreach (var Action in des.descriptAction)
+                // TODO: 필요시 Color 에 대한 예외처리
+
+                foreach (var Action in Ades.descriptAction)
                 {
                     string[] line = { "Animation", Action.ActionName, "", "", "TA" };
-                    lineList.Add(line);
+                    AlineList.Add(line);
                 }
-            
 
 
-            // TODO: 필요시 Color 에 대한 예외처리
 
-            foreach (var line in lineList)
-            {
-                sb.AppendLine(string.Join(strSeperator, line));
-            }
+                // TODO: 필요시 Color 에 대한 예외처리
 
-            File.WriteAllText(csvPath, sb.ToString(), Encoding.UTF8);
-            // File.AppendAllText(csvPath, sb.ToString());
-
-            Debug.Log("Json to CSV Done: " + csvPath);
-        }
-        else
-        {
-            //Main, Parts, Deform은 해당 코드 반복
-            CustomizeTypeTableDescript des = new CustomizeTypeTableDescript();
-
-            try
-            {
-                string text = File.ReadAllText(jsonPath);
-                des = JsonUtility.FromJson<CustomizeTypeTableDescript>(text);   //https://m.blog.naver.com/wolat/220865546178
-            }
-            catch
-            {
-                Debug.Log("File Read / Json Parsing Error. Please Check jsonPath");
-                return;
-            }
-
-            sb.AppendLine(string.Join(strSeperator, header));
-
-
-            // TODO: 필요시 Color 에 대한 예외처리
-            foreach (var category in des.categoryList)
-            {
-                foreach (var item in category.itemList)
+                foreach (var line in AlineList)
                 {
-                    string[] line = { category.categoryKey, item.itemKey, "", "", "" };
-                    lineList.Add(line);
+                    Asb.AppendLine(string.Join(strSeperator, line));
                 }
+
+                AFileposi = jsonPath[j].Replace(".json", ".csv");
+                File.WriteAllText(AFileposi, Asb.ToString(), Encoding.UTF8);
+
+                Debug.Log("Json to CSV Done: " + AFileposi);
             }
-
-
-            // TODO: 필요시 Color 에 대한 예외처리
-
-            foreach (var line in lineList)
+            else if ((jsonPath[j].ToLower().Contains("deform")))
             {
-                sb.AppendLine(string.Join(strSeperator, line));
+                List<string[]> DlineList = new List<string[]>();
+                StringBuilder Dsb = new StringBuilder();
+                CustomizeTypeTableDescript Ddes = new CustomizeTypeTableDescript();
+                string DFileposi;
+
+                try
+                {
+                    string text = File.ReadAllText(jsonPath[j]);
+                    Ddes = JsonUtility.FromJson<CustomizeTypeTableDescript>(text);   //https://m.blog.naver.com/wolat/220865546178
+                }
+                catch
+                {
+                    Debug.Log("File Read / Json Parsing Error. Please Check jsonPath");
+                    return;
+                }
+
+                Dsb.AppendLine(string.Join(strSeperator, header));
+
+
+                // TODO: 필요시 Color 에 대한 예외처리
+
+                foreach (var Datas in Ddes.deformDatas)
+                {
+                    string[] line = { "Body_Type", Datas.scaleAlias, "", "", "TD" };
+                    DlineList.Add(line);
+                }
+
+
+
+                // TODO: 필요시 Color 에 대한 예외처리
+
+                foreach (var line in DlineList)
+                {
+                    Dsb.AppendLine(string.Join(strSeperator, line));
+                }
+
+                DFileposi = jsonPath[j].Replace(".json", ".csv");
+                File.WriteAllText(DFileposi, Dsb.ToString(), Encoding.UTF8);
+
+                Debug.Log("Json to CSV Done: " + DFileposi);
             }
+            else
+            {
+                List<string[]> lineList = new List<string[]>();
+                string Fileposi;
+                StringBuilder sb = new StringBuilder();
+                CustomizeTypeTableDescript des = new CustomizeTypeTableDescript();
 
-            File.WriteAllText(csvPath, sb.ToString(), Encoding.UTF8);
-            // File.AppendAllText(csvPath, sb.ToString());
+                try
+                {
+                    string text = File.ReadAllText(jsonPath[j]);
+                    des = JsonUtility.FromJson<CustomizeTypeTableDescript>(text);   //https://m.blog.naver.com/wolat/220865546178
+                }
+                catch
+                {
+                    Debug.Log("File Read / Json Parsing Error. Please Check jsonPath");
+                    return;
+                }
 
-            Debug.Log("Json to CSV Done: " + csvPath);
+                sb.AppendLine(string.Join(strSeperator, header));
+
+
+                // TODO: 필요시 Color 에 대한 예외처리
+                foreach (var category in des.categoryList)
+                {
+                    foreach (var item in category.itemList)
+                    {
+                        string[] line = { category.categoryKey, item.itemKey, "", "", "" };
+                        lineList.Add(line);
+                    }
+                }
+
+
+                // TODO: 필요시 Color 에 대한 예외처리
+
+                foreach (var line in lineList)
+                {
+                    sb.AppendLine(string.Join(strSeperator, line));
+                }
+                Fileposi = jsonPath[j].Replace(".json", ".csv");
+                File.WriteAllText(Fileposi, sb.ToString(), Encoding.UTF8);
+
+                Debug.Log("Json to CSV Done: " + Fileposi);
+            }
         }
     }
 
