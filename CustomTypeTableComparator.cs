@@ -252,7 +252,43 @@ public class CustomTypeTableComparator : MonoBehaviour
 
         if (jsonPath.ToLower().Contains("animation"))    //ToLower() -> 소문자 컨버트, Contains() -> 해당 문자열 포함 확인(T/F)
         {
-            Debug.Log("yet");
+            AvatarAnimationDescript des = new AvatarAnimationDescript();
+
+            try
+            {
+                string text = File.ReadAllText(jsonPath);
+                des = JsonUtility.FromJson<AvatarAnimationDescript>(text);   //https://m.blog.naver.com/wolat/220865546178
+            }
+            catch
+            {
+                Debug.Log("File Read / Json Parsing Error. Please Check jsonPath");
+                return;
+            }
+
+            sb.AppendLine(string.Join(strSeperator, header));
+
+
+            // TODO: 필요시 Color 에 대한 예외처리
+            
+                foreach (var Action in des.descriptAction)
+                {
+                    string[] line = { "Animation", Action.ActionName, "", "", "TA" };
+                    lineList.Add(line);
+                }
+            
+
+
+            // TODO: 필요시 Color 에 대한 예외처리
+
+            foreach (var line in lineList)
+            {
+                sb.AppendLine(string.Join(strSeperator, line));
+            }
+
+            File.WriteAllText(csvPath, sb.ToString(), Encoding.UTF8);
+            // File.AppendAllText(csvPath, sb.ToString());
+
+            Debug.Log("Json to CSV Done: " + csvPath);
         }
         else
         {
