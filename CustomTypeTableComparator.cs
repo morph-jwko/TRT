@@ -346,7 +346,7 @@ public class CustomTypeTableComparator : MonoBehaviour
                 string Fileposi;
                 StringBuilder sb = new StringBuilder();
                 CustomizeTypeTableDescript des = new CustomizeTypeTableDescript();
-
+                string type = "";
                 try
                 {
                     string text = File.ReadAllText(jsonPath[j]);
@@ -364,9 +364,18 @@ public class CustomTypeTableComparator : MonoBehaviour
                 // TODO: 필요시 Color 에 대한 예외처리
                 foreach (var category in des.categoryList)
                 {
+                    
                     foreach (var item in category.itemList)
                     {
-                        string[] line = { category.categoryKey, item.itemKey, "", "", "" };
+                        if (jsonPath[j].ToLower().Contains("main"))
+                        {
+                            type = "TM";
+                        }
+                        else
+                        {
+                            type = "TP";
+                        }
+                        string[] line = { category.categoryKey, item.itemKey, "", "", type };
                         lineList.Add(line);
                     }
                 }
